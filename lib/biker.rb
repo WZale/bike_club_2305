@@ -17,7 +17,9 @@ class Biker
 
   def log_ride(ride, time)
     ride_times = []
-    if @rides[ride] == nil
+    if !@acceptable_terrain.include?(ride.terrain) || ride.distance > @max_distance
+      false
+    elsif @rides[ride] == nil
       @rides[ride] = (ride_times << time)
     else
       ride_times << time
@@ -26,15 +28,15 @@ class Biker
   end
   
   def personal_record(ride)
-    times = []
-    @rides[ride].each do |time|
-      times << time
+    if @rides.include?(ride)
+      times = []
+      @rides[ride].each do |time|
+        times << time
+      end
+      times.min
+    else
+      false
     end
-    times.min
   end
-
-
-# A Biker will not log a ride if the ride's terrain does not match their acceptable terrain. They also won't log a ride if the ride's total distance is greater than the Biker's max distance.
-
-# A Biker can report its personal record for a specific ride. This is the lowest time recorded for a ride. This method will return false if the Biker hasn't completed the ride
+  
 end
