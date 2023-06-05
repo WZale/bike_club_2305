@@ -42,4 +42,16 @@ RSpec.describe Biker do
       expect(@biker.rides).to eq(expected)
     end
   end
+
+  describe "#personal_record(ride)" do
+    it "can report the lowest personal time for a ride" do
+      @biker.log_ride(@ride_1, 92.5)
+      @biker.log_ride(@ride_1, 91.1)
+      @biker.log_ride(@ride_2, 60.9)
+      @biker.log_ride(@ride_2, 61.6)
+
+      expect(@biker.personal_record(@ride_1)). to eq(91.1)
+      expect(@biker.personal_record(@ride_2)). to eq(60.9)
+    end
+  end
 end
