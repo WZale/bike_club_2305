@@ -29,6 +29,9 @@ RSpec.describe Biker do
 
   describe "#log_ride(ride, time)" do
     it "can log a ride and the time taken to complete the ride" do
+      @biker.learn_terrain!(:gravel)
+      @biker.learn_terrain!(:hills)
+
       @biker.log_ride(@ride_1, 92.5)
       @biker.log_ride(@ride_1, 91.1)
       @biker.log_ride(@ride_2, 60.9)
@@ -40,18 +43,39 @@ RSpec.describe Biker do
                   }
 
       expect(@biker.rides).to eq(expected)
+
+      @biker_2.log_ride(@ride_1, 97.0)
+      @biker_2.log_ride(@ride_2, 97.0)
+      
+      expect(@biker_2.rides).to eq({})
+      
+      @biker_2.learn_terrain!(:gravel)
+      
+      @biker_2.log_ride(@ride_1, 95.0)
+      @biker_2.log_ride(@ride_2, 65.0)
+      
+      expect(@biker_2.rides).to eq({@ride_2 => [65.0]})
     end
   end
-
+  
   describe "#personal_record(ride)" do
     it "can report the lowest personal time for a ride" do
+      @biker.learn_terrain!(:gravel)
+      @biker.learn_terrain!(:hills)
+      
       @biker.log_ride(@ride_1, 92.5)
       @biker.log_ride(@ride_1, 91.1)
       @biker.log_ride(@ride_2, 60.9)
       @biker.log_ride(@ride_2, 61.6)
-
-      expect(@biker.personal_record(@ride_1)). to eq(91.1)
-      expect(@biker.personal_record(@ride_2)). to eq(60.9)
+      
+      expect(@biker.personal_record(@ride_1)).to eq(91.1)
+      expect(@biker.personal_record(@ride_2)).to eq(60.9)
+      
+      @biker_2.learn_terrain!(:gravel)
+      @biker_2.log_ride(@ride_2, 65.0)
+      
+      expect(@biker_2.personal_record(@ride_2)).to eq(65.0)
+      expect(@biker_2.personal_record(@ride_1)).to be false
     end
   end
 end
