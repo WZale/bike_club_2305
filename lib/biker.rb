@@ -24,8 +24,15 @@ class Biker
       @rides[ride] += ride_times
     end
   end
+  
+  def personal_record(ride)
+    times = []
+    @rides[ride].each do |time|
+      times << time
+    end
+    times.min
+  end
 
-#   Bikers can log a ride with a time. The Biker can keep track of all of its previous rides and times for those rides.
 
 # A Biker will not log a ride if the ride's terrain does not match their acceptable terrain. They also won't log a ride if the ride's total distance is greater than the Biker's max distance.
 
